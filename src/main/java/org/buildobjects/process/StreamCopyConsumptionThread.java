@@ -2,15 +2,16 @@ package org.buildobjects.process;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import static org.buildobjects.process.ExecutionEvent.EXCEPTION_IN_STREAM_HANDLING;
 
 /**
- *
  */
 class StreamCopyConsumptionThread implements OutputConsumptionThread {
+
     private final OutputStream stdout;
+
     private Thread thread;
+
     private Throwable throwable;
 
     private final EventSink eventSink;
@@ -21,31 +22,18 @@ class StreamCopyConsumptionThread implements OutputConsumptionThread {
     }
 
     public void startConsumption(final InputStream inputStream) {
-        this.thread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    new StreamCopyRunner(inputStream, stdout, false).run();
-                } catch (Throwable t) {
-                    if (!thread.isInterrupted()) {
-                        StreamCopyConsumptionThread.this.throwable = t;
-                        eventSink.dispatch(EXCEPTION_IN_STREAM_HANDLING);
-                    }
-                }
-            }
-        });
-        this.thread.start();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void join() throws InterruptedException {
-        thread.join();
-
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void interrupt() {
-        thread.interrupt();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Throwable getThrowable() {
-        return throwable;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -8,11 +8,17 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * such as the output on stderr.
  */
 public class ExternalProcessFailureException extends RuntimeException {
+
     private final String command;
+
     final private String commandLine;
+
     final private int exitValue;
+
     final private String stderr;
+
     private final ByteArrayOutputStream stdout;
+
     final private long time;
 
     ExternalProcessFailureException(String command, String commandLine, int exitValue, String stderr, ByteArrayOutputStream stdOut, long time) {
@@ -45,16 +51,7 @@ public class ExternalProcessFailureException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        String formattedStdErr = formatOutput(stderr, "  STDERR: ");
-        final String outString = stdout != null ? new String(stdout.toByteArray(), UTF_8) : null;
-        String formattedStdOut = formatOutput(outString, "  STDOUT: ");
-
-        return
-            "External process `" + command + "` terminated with unexpected exit status " + exitValue +
-                " after " + time + "ms:\n" +
-                "  $ " + commandLine + "\n" +
-                formattedStdErr +
-                formattedStdOut;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -70,29 +67,27 @@ public class ExternalProcessFailureException extends RuntimeException {
      * @return a command line to invoke this process including args and using basic shell escaping.
      */
     public String getCommandLine() {
-        return commandLine;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
-
 
     /**
      * @return the actual exit value
      */
     public int getExitValue() {
-        return exitValue;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * @return the output on stderr
      */
     public String getStderr() {
-        return stderr;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * @return the execution time until the process failed
      */
     public long getTime() {
-        return time;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

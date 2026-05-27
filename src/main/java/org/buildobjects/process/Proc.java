@@ -1,19 +1,16 @@
 package org.buildobjects.process;
 
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static java.lang.Integer.MAX_VALUE;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.buildobjects.process.ExecutionEvent.EXCEPTION_IN_STREAM_HANDLING;
 import static org.buildobjects.process.ExecutionEvent.PROCESS_EXITED;
-
 
 /**
  * Internal implementation of the process mechanics
@@ -21,92 +18,68 @@ import static org.buildobjects.process.ExecutionEvent.PROCESS_EXITED;
 class Proc implements EventSink {
 
     private final Process process;
+
     private int exitValue;
 
     private long executionTime;
 
     private final OutputConsumptionThread err;
+
     private final String command;
+
     private final List<String> args;
+
     private final Long timeout;
+
     private final BlockingQueue<ExecutionEvent> eventQueue = new LinkedBlockingQueue<ExecutionEvent>();
+
     private final IoHandler ioHandler;
 
-    public Proc(String command,
-                List<String> args,
-                Map<String, String> env,
-                boolean clearEnvironment,
-                InputStream stdin,
-                Object stdout,
-                File directory,
-                Long timeout,
-                Object stderr)
-            throws StartupException, TimeoutException, ExternalProcessFailureException {
-
+    public Proc(String command, List<String> args, Map<String, String> env, boolean clearEnvironment, InputStream stdin, Object stdout, File directory, Long timeout, Object stderr) throws StartupException, TimeoutException, ExternalProcessFailureException {
         this.command = command;
         this.args = args;
         this.timeout = timeout;
         String[] cmdArray = concatenateCmdArgs();
         long t1 = System.currentTimeMillis();
-
         OutputConsumptionThread stdoutConsumer;
-
         try {
-            ProcessBuilder builder = new ProcessBuilder(cmdArray)
-                    .directory(directory);
-
+            ProcessBuilder builder = new ProcessBuilder(cmdArray).directory(directory);
             if (clearEnvironment) {
                 builder.environment().clear();
             }
-
             builder.environment().putAll(env);
             process = builder.start();
-
             stdoutConsumer = createStreamConsumer(stdout);
-
             if (stderr == null) {
                 err = new ByteArrayConsumptionThread(this);
             } else {
                 err = createStreamConsumer(stderr);
             }
-
-
             ioHandler = new IoHandler(stdin, stdoutConsumer, err, process);
-
         } catch (IOException e) {
             throw new StartupException("Could not startup process '" + toString() + "'.", e);
         }
-
         try {
             startControlThread();
-
             do {
                 ExecutionEvent nextEvent = timeout == null ? eventQueue.poll(MAX_VALUE, HOURS) : eventQueue.poll(timeout, MILLISECONDS);
-
                 if (nextEvent == null) {
                     killCleanUpAndThrowTimeoutException();
                 }
-
                 if (nextEvent == PROCESS_EXITED) {
                     break;
                 }
-
                 if (nextEvent == EXCEPTION_IN_STREAM_HANDLING) {
                     killProcessCleanup();
                     break;
                 }
-
                 throw new RuntimeException("Felix reckons we should never reach this point");
             } while (true);
-
             List<Throwable> exceptions = ioHandler.joinConsumption();
             if (!exceptions.isEmpty()) {
                 throw new IllegalStateException("Exception in stream consumption", exceptions.get(0));
             }
-
             executionTime = System.currentTimeMillis() - t1;
-
-
         } catch (InterruptedException e) {
             killProcessCleanup();
             throw new RuntimeException("Control Thread was interrupted killed process.", e);
@@ -124,27 +97,18 @@ class Proc implements EventSink {
     }
 
     byte[] getErrorBytes() {
-        if (err instanceof ByteArrayConsumptionThread) {
-            return ((ByteArrayConsumptionThread) err).getBytes();
-        }
-        // Output stream/stream consumer was provided by user, we don't own it.
-        return null;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public String getErrorString() {
-        byte[] bytes = getErrorBytes();
-        return bytes != null ? new String(bytes, StandardCharsets.UTF_8) : null;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private void startControlThread() {
         new Thread(new Runnable() {
+
             public void run() {
-                try {
-                    exitValue = process.waitFor();
-                    dispatch(PROCESS_EXITED);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException("", e);
-                }
+                throw new UnsupportedOperationException("STUB: not implemented");
             }
         }).start();
     }
@@ -161,11 +125,7 @@ class Proc implements EventSink {
     }
 
     public void dispatch(ExecutionEvent event) {
-        try {
-            eventQueue.put(event);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("${END}", e);
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private String[] concatenateCmdArgs() {
@@ -175,14 +135,13 @@ class Proc implements EventSink {
         return cmd.toArray(new String[cmd.size()]);
     }
 
-
     @Override
     public String toString() {
-        return formatCommandLine(command, args);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     static String formatCommandLine(String command, List<String> args) {
-        return command + " " + argsString(args);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private static String argsString(List<String> args) {
@@ -211,10 +170,10 @@ class Proc implements EventSink {
     }
 
     public int getExitValue() {
-        return exitValue;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public long getExecutionTime() {
-        return executionTime;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

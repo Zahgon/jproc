@@ -2,16 +2,19 @@ package org.buildobjects.process;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import static org.buildobjects.process.ExecutionEvent.EXCEPTION_IN_STREAM_HANDLING;
 
 /**
  * This class ${end}
  */
 class StreamConsumerConsumptionThread implements OutputConsumptionThread {
+
     private final EventSink eventSink;
+
     private final StreamConsumer stdout;
+
     private Thread thread;
+
     private Throwable throwable;
 
     public StreamConsumerConsumptionThread(EventSink eventSink, StreamConsumer stdout) {
@@ -20,33 +23,18 @@ class StreamConsumerConsumptionThread implements OutputConsumptionThread {
     }
 
     public void startConsumption(final InputStream inputStream) {
-        this.thread = new Thread(new Runnable() {
-
-
-            public void run() {
-                try {
-                    stdout.consume(inputStream);
-
-                } catch (Throwable t) {
-                    if (!thread.isInterrupted()) {
-                        StreamConsumerConsumptionThread.this.throwable = t;
-                        eventSink.dispatch(EXCEPTION_IN_STREAM_HANDLING);
-                    }
-                }
-            }
-        });
-        thread.start();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void join() throws InterruptedException {
-        thread.join();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void interrupt() {
-        thread.interrupt();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Throwable getThrowable() {
-        return throwable;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -3,7 +3,6 @@ package org.buildobjects.process;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import static org.buildobjects.process.ExecutionEvent.EXCEPTION_IN_STREAM_HANDLING;
 
 class ByteArrayConsumptionThread implements OutputConsumptionThread {
@@ -15,6 +14,7 @@ class ByteArrayConsumptionThread implements OutputConsumptionThread {
     private Throwable throwable;
 
     private byte[] bytes;
+
     private final EventSink eventSink;
 
     ByteArrayConsumptionThread(EventSink eventSink) {
@@ -22,48 +22,32 @@ class ByteArrayConsumptionThread implements OutputConsumptionThread {
     }
 
     public byte[] getBytes() {
-        return bytes;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-
     public void startConsumption(final InputStream inputStream) {
-        thread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    bytes = toByteArray(inputStream);
-                } catch (Throwable t) {
-                    if (!thread.isInterrupted()) {
-                        ByteArrayConsumptionThread.this.throwable = t;
-                        eventSink.dispatch(EXCEPTION_IN_STREAM_HANDLING);
-                    }
-                }
-            }
-        });
-        thread.start();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private static byte[] toByteArray(InputStream inputStream) throws IOException {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-
         int n;
         while (-1 != (n = inputStream.read(buffer))) {
             output.write(buffer, 0, n);
         }
-
         return output.toByteArray();
     }
 
-
     public void join() throws InterruptedException {
-        thread.join();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void interrupt() {
-        thread.interrupt();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Throwable getThrowable() {
-        return throwable;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }
